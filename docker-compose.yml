@@ -1,0 +1,53 @@
+version: '3.8'
+
+services:
+  db:
+    image: mysql:8
+    container_name: db_ficat
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: fichas_db
+      MYSQL_USER: user
+      MYSQL_PASSWORD: password
+    ports:
+      - "3306:3306"
+    volumes:
+      - db_data:/var/lib/mysql
+    networks:
+      - app_network
+
+  backend:
+    build: ./backend
+    container_name: api_ficat
+    depends_on:
+      - db
+    environment:
+      DATABASE_URL: mysql://user:password@db:3306/fichas_db
+    ports:
+      - "3001:3001"
+    volumes:
+      - ./backend:/app
+    networks:
+      - app_network
+
+  frontend:
+    build: ./frontend
+    container_name: web_ficat
+    depends_on:
+      - backend
+    ports:
+      - "3000:3000"
+    environment:
+      NEXT_PUBLIC_API_URL=https://backend-ficat.solmakertech.com.br
+    volumes:
+      - ./frontend:/app
+    networks:
+      - app_network
+
+volumes:
+  db_data:
+
+networks:
+  app_network:
+    driver: bridge
