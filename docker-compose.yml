@@ -1,15 +1,13 @@
-version: '3.8'
-
 services:
   db:
-    image: mysql:8
+    image: mariadb:11.7.2
     container_name: db_ficat
     restart: always
     environment:
-      MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: fichas_db
-      MYSQL_USER: user
-      MYSQL_PASSWORD: password
+      MARIADB_ROOT_PASSWORD: root
+      MARIADB_DATABASE: fichas_db
+      MARIADB_USER: user
+      MARIADB_PASSWORD: password
     ports:
       - "3306:3306"
     volumes:
@@ -18,7 +16,9 @@ services:
       - app_network
 
   backend:
-    build: ./backend
+    build:
+      context: ./backend
+      dockerfile: Dockerfile.dev # ou Dockerfile para produção
     container_name: api_ficat
     depends_on:
       - db
@@ -32,14 +32,16 @@ services:
       - app_network
 
   frontend:
-    build: ./frontend
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile.dev # ou Dockerfile para produção
     container_name: web_ficat
     depends_on:
       - backend
     ports:
       - "3000:3000"
     environment:
-      NEXT_PUBLIC_API_URL=https://backend-ficat.solmakertech.com.br
+      NEXT_PUBLIC_API_URL: https://backend-ficat.solmakertech.com.br
     volumes:
       - ./frontend:/app
     networks:
