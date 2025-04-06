@@ -1,7 +1,16 @@
+# .gitignore
+# Ignorar arquivos de configuração do sistema
 node_modules/
 dist/
 .env
 .env.local
+.log
 backend/node_modules/
 frontend/node_modules/
 db_data/
+docker/db_data
+
+# Ignorar dumps e arquivos temporários
+*.sql~
+*.bak
+*.dump
