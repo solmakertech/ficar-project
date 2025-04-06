@@ -7,6 +7,9 @@ dist/
 .log
 backend/node_modules/
 frontend/node_modules/
+
+# Docker
+# Ignorar arquivos de configuração do Docker
 db_data/
 docker/db_data
 
@@ -14,3 +17,24 @@ docker/db_data
 *.sql~
 *.bak
 *.dump
+
+# Prisma
+# Ignorar arquivos gerados pelo Prisma
+prisma/migrations/
+prisma/dev.db
+prisma/test.db
+# Ignorar arquivos de log
+*.log
+# Ignorar arquivos de cache
+.cache
+# Ignorar arquivos de configuração do Nextjs
+.next/
+# Ignorar arquivos de configuração do editor
+.vscode/
+# Ignorar arquivos de configuração do sistema
+.DS_Store
+# Ignorar arquivos de configuração do sistema
+Thumbs.db
+# Ignorar arquivos de configuração do sistema
+.idea/
+# Ignorar arquivos de configuração do sistema 
