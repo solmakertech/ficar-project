@@ -1,4 +1,4 @@
-# Banco de Dados - Projeto FICAT
+# Banco de Dados - Projeto Ficha Catalográfica
 
 Este diretório contém os arquivos de configuração e inicialização do banco de dados MariaDB usado no projeto.
 

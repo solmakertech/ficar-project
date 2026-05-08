@@ -54,10 +54,8 @@ DATABASE_URL="mysql://user:password@localhost:3306/fichas_db"
 NEXT_PUBLIC_API_URL="http://localhost:3001"
 Suba os serviços com Docker Compose
 
-bash
-Copiar
-Editar
-docker compose -f docker-compose.dev.yml up --build
+
+npm run docker:dev
 Acesse:
 
 Frontend: http://localhost:3000

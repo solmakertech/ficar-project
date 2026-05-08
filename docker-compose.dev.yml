@@ -22,7 +22,7 @@ services:
       dockerfile: Dockerfile.dev
     container_name: api_ficat
     environment:
-      iDATABASE_URL: mysql://user:password@db:3306/fichas_db
+      DATABASE_URL: mysql://user:password@db:3306/fichas_db
       NODE_ENV: development
     ports:
       - "3001:3001"
