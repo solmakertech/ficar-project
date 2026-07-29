@@ -17,8 +17,8 @@ services:
 
   backend:
     build:
-      context: ./backend
-      dockerfile: Dockerfile.dev # ou Dockerfile para produção
+      context: .
+      dockerfile: apps/api/Dockerfile.dev # ou Dockerfile para produção
     container_name: api_ficat
     depends_on:
       - db
@@ -27,14 +27,14 @@ services:
     ports:
       - "3001:3001"
     volumes:
-      - ./backend:/app
+      - ./apps/api:/app/apps/api
     networks:
       - app_network
 
   frontend:
     build:
-      context: ./frontend
-      dockerfile: Dockerfile.dev # ou Dockerfile para produção
+      context: .
+      dockerfile: apps/web/Dockerfile.dev # ou Dockerfile para produção
     container_name: web_ficat
     depends_on:
       - backend
@@ -43,7 +43,7 @@ services:
     environment:
       NEXT_PUBLIC_API_URL: https://backend-ficat.solmakertech.com.br
     volumes:
-      - ./frontend:/app
+      - ./apps/web:/app/apps/web
     networks:
       - app_network
 

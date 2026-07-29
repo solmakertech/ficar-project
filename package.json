@@ -1,14 +1,35 @@
 {
+  "name": "ficat",
+  "private": true,
   "scripts": {
+    "build": "turbo run build",
+    "dev": "turbo run dev",
+    "lint": "turbo run lint",
+    "format": "prettier --write \"**/*.{ts,tsx,md}\"",
+    "check-types": "turbo run check-types",
     "docker:dev": "docker compose -f docker-compose.dev.yml up --build",
     "prisma:generate": "prisma generate --config=./prisma.config.ts",
     "prisma:migrate": "prisma migrate dev --config=./prisma.config.ts"
   },
   "devDependencies": {
     "prisma": "^7.0.0",
-    "dotenv": "^16.4.7"
+    "dotenv": "^16.4.7",
+    "prettier": "^3.7.4",
+    "turbo": "^2.10.7",
+    "typescript": "5.9.2"
   },
   "dependencies": {
     "@prisma/client": "^7.0.0"
+  },
+  "allowScripts": {
+    "@prisma/engines@7.9.1": true,
+    "@swc/core@1.15.47": true,
+    "prisma@7.9.1": true,
+    "sharp@0.33.5": true,
+    "unrs-resolver@1.12.2": true
+  },
+  "packageManager": "pnpm@9.0.0",
+  "engines": {
+    "node": ">=18"
   }
 }

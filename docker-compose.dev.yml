@@ -18,8 +18,8 @@ services:
 
   backend:
     build:
-      context: ./backend
-      dockerfile: Dockerfile.dev
+      context: .
+      dockerfile: apps/api/Dockerfile.dev
     container_name: api_ficat
     environment:
       DATABASE_URL: mysql://user:password@db:3306/fichas_db
@@ -27,8 +27,8 @@ services:
     ports:
       - "3001:3001"
     volumes:
-      - ./backend:/app
-      - /app/node_modules # Evita sobrescrever node_modules da imagem
+      - ./apps/api:/app/apps/api
+      - /app/node_modules
     depends_on:
       - db
     networks:
@@ -36,8 +36,8 @@ services:
 
   frontend:
     build:
-      context: ./frontend
-      dockerfile: Dockerfile.dev
+      context: .
+      dockerfile: apps/web/Dockerfile.dev
     container_name: web_ficat
     environment:
       NEXT_PUBLIC_API_URL: "http://localhost:3001"
@@ -45,7 +45,7 @@ services:
     ports:
       - "3000:3000"
     volumes:
-      - ./frontend:/app
+      - ./apps/web:/app/apps/web
       - /app/node_modules
     depends_on:
       - backend
