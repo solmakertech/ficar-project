@@ -1,11 +1,23 @@
-import { type JSX } from "react";
+import { type ReactNode } from "react";
 
-export function Code({
-  children,
-  className,
-}: {
-  children: React.ReactNode;
+interface CodeProps {
+  children: ReactNode;
   className?: string;
-}): JSX.Element {
-  return <code className={className}>{children}</code>;
+}
+
+export function Code({ children, className }: CodeProps) {
+  return (
+    <code
+      className={className}
+      style={{
+        fontFamily: "var(--font-mono)",
+        fontSize: "0.875em",
+        backgroundColor: "var(--color-surface-soft)",
+        padding: "2px 6px",
+        borderRadius: 4,
+      }}
+    >
+      {children}
+    </code>
+  );
 }

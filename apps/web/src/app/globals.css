@@ -1,26 +1,72 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
+@theme {
+  /* Colors */
+  --color-canvas: #f7f2ea;
+  --color-surface: #ffffff;
+  --color-surface-warm: #fff7ec;
+  --color-surface-alt: #fdf6ee;
+  --color-surface-soft: #f7efe6;
+  --color-ink-deep: #1f1c18;
+  --color-ink: #2d241a;
+  --color-ink-secondary: #5a4a3b;
+  --color-ink-muted: #6b5b4b;
+  --color-ink-subtle: #7a6246;
+  --color-ink-label: #473828;
+  --color-ink-tag: #6b4f2d;
+  --color-hairline: #e3d5c3;
+  --color-hairline-soft: #e5d4c1;
+  --color-hairline-medium: #d7c4ab;
+  --color-hairline-strong: #e0d1be;
+  --color-hairline-divider: #ead9c6;
+  --color-badge: #ead8c0;
+  --color-accent: #d3a86b;
+  --color-accent-deep: #a0763c;
+  --color-accent-ring: #e2c08b;
+  --color-accent-bright: #8b6b4a;
+  --color-gradient-top: #efe4d4;
+  --color-preview-border: #d6c2ab;
+  --color-button-primary: #2d241a;
+  --color-button-primary-hover: #1f1812;
+  --color-button-primary-text: #f9f4ee;
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
+  /* Fonts */
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
-}
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  /* Spacing */
+  --spacing-xxs: 4px;
+  --spacing-xs: 8px;
+  --spacing-sm: 12px;
+  --spacing-md: 16px;
+  --spacing-lg: 20px;
+  --spacing-xl: 24px;
+  --spacing-xxl: 32px;
+  --spacing-xxxl: 40px;
+  --spacing-section-sm: 48px;
+  --spacing-section: 64px;
+
+  /* Border Radius */
+  --radius-sm: 6px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-xl: 16px;
+  --radius-xxl: 20px;
+  --radius-xxxl: 28px;
+  --radius-full: 9999px;
+
+  /* Shadows */
+  --shadow-card: 0 24px 80px -60px rgba(0, 0, 0, 0.6);
+  --shadow-card-sm: 0 16px 40px -40px rgba(0, 0, 0, 0.7);
+  --shadow-card-md: 0 24px 60px -55px rgba(0, 0, 0, 0.7);
+  --shadow-card-lg: 0 18px 50px -40px rgba(0, 0, 0, 0.6);
+
+  /* Containers */
+  --container-content: 1280px;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--color-canvas);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
 }
