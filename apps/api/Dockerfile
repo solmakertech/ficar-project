@@ -1,27 +1,47 @@
-FROM node:22.14.0 AS build
+# ==========================================
+# 1. Base / Preparação de Dependências
+# ==========================================
+FROM node:24-slim AS base
+ENV PNPM_HOME="/pnpm"
+ENV PATH="$PNPM_HOME:$PATH"
+RUN corepack enable
+
 WORKDIR /app
 
-RUN corepack enable && corepack prepare pnpm@9 --activate
-
+# ==========================================
+# 2. Instalação e Build
+# ==========================================
+FROM base AS build
 COPY pnpm-lock.yaml package.json pnpm-workspace.yaml ./
 COPY apps/api/package.json ./apps/api/
 COPY packages/database/package.json ./packages/database/
 
-RUN pnpm install --frozen-lockfile --prod
+# Instala TODAS as dependências necessárias para compilar (prod + dev)
+RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install --frozen-lockfile
 
 COPY . .
 
+# Compila a aplicação
 RUN pnpm --filter=api build
 
-FROM node:22.14.0
+# Isola apenas a aplicação api e suas dependências de PRODUÇÃO numa pasta separada
+RUN pnpm --filter=api --prod deploy /prod/api
+
+# ==========================================
+# 3. Imagem Final de Produção (Enxuta)
+# ==========================================
+FROM node:24-slim AS runner
 WORKDIR /app
 
-RUN corepack enable && corepack prepare pnpm@9 --activate
+ENV NODE_ENV=production
 
-COPY --from=build /app/apps/api/dist ./dist
-COPY --from=build /app/package.json ./
-COPY --from=build /app/pnpm-lock.yaml ./
-COPY --from=build /app/node_modules ./node_modules
+# Copia apenas o que foi gerado pelo pnpm deploy (código + node_modules de prod)
+COPY --from=build /prod/api/node_modules ./node_modules
+COPY --from=build /prod/api/dist ./dist
+COPY --from=build /prod/api/package.json ./package.json
+
+# Segurança: Executa a aplicação como usuário sem privilégios root
+USER node
 
 EXPOSE 3001
 

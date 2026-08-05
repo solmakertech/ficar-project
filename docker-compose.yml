@@ -14,36 +14,51 @@ services:
       - db_data:/var/lib/mysql
     networks:
       - app_network
+    healthcheck:
+      test: ["CMD", "healthcheck-sh", "--connect", "--innodb_initialized"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
 
   backend:
     build:
       context: .
-      dockerfile: apps/api/Dockerfile.dev # ou Dockerfile para produção
+      dockerfile: apps/api/Dockerfile.dev
     container_name: api_ficat
     depends_on:
-      - db
+      db:
+        condition: service_healthy
     environment:
       DATABASE_URL: mysql://user:password@db:3306/fichas_db
+      NODE_ENV: development
     ports:
       - "3001:3001"
     volumes:
-      - ./apps/api:/app/apps/api
+      - .:/app
+      - /app/node_modules
+      - /app/apps/api/node_modules
+      - /app/packages/database/node_modules
+      - /app/apps/api/dist
     networks:
       - app_network
 
   frontend:
     build:
       context: .
-      dockerfile: apps/web/Dockerfile.dev # ou Dockerfile para produção
+      dockerfile: apps/web/Dockerfile.dev
     container_name: web_ficat
     depends_on:
       - backend
     ports:
       - "3000:3000"
     environment:
-      NEXT_PUBLIC_API_URL: https://backend-ficat.solmakertech.com.br
+      NEXT_PUBLIC_API_URL: http://localhost:3001
+      NODE_ENV: development
     volumes:
-      - ./apps/web:/app/apps/web
+      - .:/app
+      - /app/node_modules
+      - /app/apps/web/node_modules
+      - /app/apps/web/.next
     networks:
       - app_network
 

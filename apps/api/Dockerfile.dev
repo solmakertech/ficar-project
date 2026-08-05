@@ -1,15 +1,24 @@
-FROM node:22.14.0
+FROM node:22-slim
+
 WORKDIR /app
 
-RUN corepack enable && corepack prepare pnpm@9 --activate
+# Ativa o pnpm via corepack
+ENV PNPM_HOME="/pnpm"
+ENV PATH="$PNPM_HOME:$PATH"
+RUN corepack enable
 
+# 1. Copia arquivos de manifestos/workspace
 COPY pnpm-lock.yaml package.json pnpm-workspace.yaml ./
 COPY apps/api/package.json ./apps/api/
 COPY packages/database/package.json ./packages/database/
 
-RUN pnpm install --frozen-lockfile
+# 2. Cache de store do pnpm para montagens rápidas
+RUN --mount=type=cache,id=pnpm,target=/pnpm/store \
+    pnpm install --frozen-lockfile
 
+# 3. Copia o restante do código-fonte
 COPY . .
 
 EXPOSE 3001
+
 CMD ["pnpm", "--filter=api", "run", "start:dev"]
